@@ -1,5 +1,5 @@
 #
-# $Id: PostalAddress.pm,v 1.2 2005/04/22 06:20:50 michel Exp $
+# $Id: PostalAddress.pm,v 1.3 2005/04/28 21:14:23 michel Exp $
 #
 
 package Geo::PostalAddress;
@@ -12,12 +12,18 @@ require Exporter;
 @EXPORT = ();
 @EXPORT_OK = ();
 %EXPORT_TAGS = ();
-$VERSION = 0.02;
+$VERSION = 0.03; # ExtUtils::MakeMaker will use this.
+my $save_version = $VERSION; # Save so I can clean up after Locale::SubCountry
 
 use UNIVERSAL;
 use Locale::Country;
 use Locale::SubCountry;
 use Carp;
+
+if ($save_version ne $VERSION) { # Workaround for Locale::SubCountry lossage
+  $Locale::SubCountry::VERSION = $VERSION;
+  $VERSION = $save_version;
+}
 
 my (%per_country_data, %default_per_country_data);
 
@@ -48,14 +54,16 @@ would appear to require.
   my $AU_parser = Geo::PostalAddress->new('AU');
   my $format = $AU_parser->format();
   # $format now contains:
-  # [[Addr1, 40], [Addr2, 40], [Addr3, 40], [Addr4, 40], 3, [City, 40],
-  #  [State, {NSW => "New South Wales", TAS => "Tasmania", QLD => "Queensland",
-  #           SA => "South Australia", WA => "Western Australia",
-  #           VIC => "Victoria", ACT => "Australian Capital Territory",
-  #           NT => "Northern Territory"}], [Postcode, 4, qr/^\d\d\d\d$/]]
-  # 40 in [Addr1, 40] is the suggested displayed field width (not max. length).
-  # 3 means that the next 3 fields should/could be on the same row.
-  # [State, {...}] means an enumerated list is used for this field, with keys
+  # [['Addr1', 40], ['Addr2', 40], ['Addr3', 40], ['Addr4', 40], 3,
+  #  ['City', 40],
+  #  ['State', {NSW => "New South Wales", TAS => "Tasmania",
+  #             QLD => "Queensland", SA => "South Australia",
+  #             WA  => "Western Australia", VIC => "Victoria",
+  #             ACT => "Australian Capital Territory",
+  #             NT  => "Northern Territory"}], ['Postcode', 4, qr/^\d\d\d\d$/]]
+  # 40 in ['Addr1', 40] is the suggested displayed field width (not the maximum
+  # length). 3 means that the next 3 fields should/could be on the same row.
+  # ['State', {...}] means an enumerated list is used for this field, with keys
   # being the stored values and values being the labels used for display or
   # selection.
   my $display = $AU_parser->display(["4360 DUKES RD", "KALGOORLIE WA 6430"]);
