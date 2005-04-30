@@ -11,3 +11,8 @@ Revision history for Perl extension Geo::PostalAddress.
 	* added dependencies in Makefile.PL
 	* Workaround Locale::Subcountry namespace pollution
 	* Tinkered with synopsis
+
+0.04  Sat Apr 30 08:01:00 2005
+	- third alpha release
+	* added t/* to MANIFEST
+	* reminded myself that "make distcheck" exists for a reason

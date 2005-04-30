@@ -1,5 +1,5 @@
 #
-# $Id: PostalAddress.pm,v 1.3 2005/04/28 21:14:23 michel Exp $
+# $Id: PostalAddress.pm,v 1.4 2005/04/30 18:39:28 michel Exp $
 #
 
 package Geo::PostalAddress;
@@ -12,7 +12,7 @@ require Exporter;
 @EXPORT = ();
 @EXPORT_OK = ();
 %EXPORT_TAGS = ();
-$VERSION = 0.03; # ExtUtils::MakeMaker will use this.
+$VERSION = 0.04; # ExtUtils::MakeMaker will use this.
 my $save_version = $VERSION; # Save so I can clean up after Locale::SubCountry
 
 use UNIVERSAL;
